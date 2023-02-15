@@ -1,20 +1,9 @@
 $(document).ready(function () {
+
   window.dancers = [];
   window.limit = 0;
-  $('.addDancerButton').on('click', function (event) {
-    /* This function sets up the click handlers for the create-dancer
-     * buttons on dancefloor.html. You should only need to make one small change to it.
-     * As long as the "data-dancer-maker-function-name" attribute of a
-     * class="addDancerButton" DOM node matches one of the names of the
-     * maker functions available in the global scope, clicking that node
-     * will call the function to make the dancer.
-     */
 
-    /* dancerMakerFunctionName is a string which must match
-     * one of the dancer maker functions available in global scope.
-     * A new object of the given type will be created and added
-     * to the stage.
-     */
+  $('.addDancerButton').on('click', function (event) {
 
     // New HTML elements
     var dancerMakerFunctionName = $(this).data('dancer-maker-function-name');
@@ -22,64 +11,96 @@ $(document).ready(function () {
     var dancerMakerFunction = window[dancerMakerFunctionName];
 
     // make a dancer with a random position
+    if (window.limit < 90) {
 
-    if (window.limit < 9) {
+      if (Math.floor(Math.random() * 10) % 2 === 0) {
+
+        character = 'kite';
+      } else {
+
+        character = 'pitou';
+      }
+
       var dancer = dancerMakerFunction(
-        $("body").height() * Math.random(), // top
-        $("body").width() * Math.random(), // left
+
+        character,
+        ($('.bg').height() * Math.random()) + ($('.bg').height() / 50), // top
+        ($('.bg').width()) * Math.random(), // left
         Math.random() * 1000 // timeBetweenSteps
       );
+
       window.dancers.push(dancer);
-
-      // if (Math.floor(Math.random() * 10) % 2 === 0) {
-
-      // }
 
       numDancers = window.dancers.length;
       var left = $('body').width() / (2 * numDancers);
       var leftSpacing = $('body').width() / window.dancers.length;
 
       for (let dancer in window.dancers) {
-        window.dancers[dancer].setPosition.call(window.dancers[dancer], window.dancers[dancer].top, left);
 
-        console.log(window.dancers[dancer]);
+        window.dancers[dancer].setPosition.call(window.dancers[dancer], window.dancers[dancer].top, left);
+        //console.log(window.dancers[dancer]);
         left += leftSpacing;
       }
 
       $('body').append(dancer.$node);
       window.limit++;
     }
-    // var dancerKite = dancerMakerFunction(
-    //   $("body").height() * Math.random(), // top
-    //   $("body").width() * Math.random(), // left
-    //   Math.random() * 1000 // timeBetweenSteps
-    // );
-    // $('body').append(dancer.$node);
-    // //this.$node
-    // var dancerPitou = dancerMakerFunction(
-    //   $("body").height() * Math.random(), // top
-    //   $("body").width() * Math.random(), // left
-    //   Math.random() * 1000 // timeBetweenSteps
-    // );
-    // $('body').append(dancer.$node);
   });
 
-
   $('.lineUpDancerButton').on('click', function (event) {
-    //var dancerMakerFunctionName = $(this).data('makeChibisLineUp');
-    // get the maker function for the kind of dancer we're supposed to make
-    //var dancerMakerFunction = window[dancerMakerFunctionName];
-
 
     console.log('Dancers ', window.dancers);
+
     for (let dancer in window.dancers) {
-      window.dancers[dancer].lineUp.call(window.dancers[dancer], '50%');
+
+      window.dancers[dancer].lineUp.call(window.dancers[dancer],
+        ($('.bg').height() - ($('.bg').height() / 8)));
     }
   });
 
-
-
+  $(document).on({
+    mouseenter: function () {
+      console.log('before');
+      var styleSettings = {
+        height: '75%'
+      };
+      $(this).css(styleSettings);
+    },
+    mouseleave: function () {
+      console.log('after');
+      var styleSettings = {
+        height: '50%'
+      };
+      $(this).css(styleSettings);
+    }
+  }, '.head');
+  // $(document).on({
+  //   mouseenter: function () {
+  //     console.log('before');
+  //     $(this).animate( {
+  //       height: '75%'
+  //     }, '1ms', 'swing');
+  //   },
+  //   mouseleave: function () {
+  //     console.log('after');
+  //     $(this).animate( {
+  //       height: '50%'
+  //     }, '1ms', 'swing');
+  //   }
+  // }, '.head');
 });
+
+//   $('.head').on('mouseover', function (event) {
+//     console.log('before');
+//     $(this).animate( {
+//       height: '200%'
+//     });
+//     console.log('hi');
+//   });
+//   $('.head').on('mouseleave', function (event) {
+//     $(this).height('50%');
+//   });
+// });
 
 // $('.Button').on('click', function (event) {
 /* This function sets up the click handlers for the create-dancer

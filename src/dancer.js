@@ -31,7 +31,7 @@
 //   return dancer;
 // };
 
-var Dancer = function(top, left, timeBetweenSteps) {
+var Dancer = function (top, left, timeBetweenSteps) {
   this.$node = $('<span class="dancer"></span>');
   this.timeBetweenSteps = timeBetweenSteps;
   this.top = top;
@@ -40,17 +40,28 @@ var Dancer = function(top, left, timeBetweenSteps) {
   this.setPosition(top, left);
 };
 
-Dancer.prototype.step = function() {
+Dancer.prototype.step = function () {
   // the basic dancer doesn't do anything interesting at all on each step,
   // it just schedules the next step
-  setTimeout(this.step.bind(this), this.timeBetweenSteps);
+  setTimeout( this.step.bind(this), this.timeBetweenSteps);
 };
 
-Dancer.prototype.setPosition = function(top, left) {
+Dancer.prototype.tilt = function () {
+  // the basic dancer doesn't do anything interesting at all on each step,
+  // it just schedules the next step
+  setTimeout( this.step.bind(this), 1);
+};
+
+Dancer.prototype.setPosition = function (top, left) {
+  this.top = top <= (32) ? (top + 32) : top;
+  this.left = left;
   var styleSettings = {
-    top: top,
+    top: this.top,
     left: left
   };
   this.$node.css(styleSettings);
 };
 
+Dancer.prototype.lineUp = function (sameY) {
+  this.setPosition(sameY, this.left);
+};
